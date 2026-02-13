@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>리베라입시컨설팅 | Libera Consulting</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary-dark: #091847;
+            --primary: #0f2670;
+            --primary-light: #1a3a9f;
+            --accent: #3366cc;
+            --accent-light: #5a8dee;
+            --gold: #d4a843;
+            --success: #059669;
+            --success-light: #ecfdf5;
+            --bg: #f5f7fb;
+            --white: #ffffff;
+            --text: #1a1a2e;
+            --text-sub: #6b7280;
+            --text-muted: #9ca3af;
+            --border: #e5e7eb;
+            --shadow: 0 2px 12px rgba(9,24,71,0.06);
+            --shadow-md: 0 4px 24px rgba(9,24,71,0.08);
+            --shadow-lg: 0 8px 40px rgba(9,24,71,0.12);
+        }
+
+        body {
+            font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ══════ Header ══════ */
+        .header {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 50%, var(--primary-light) 100%);
+            position: sticky; top: 0; z-index: 100;
+            box-shadow: 0 2px 20px rgba(9,24,71,0.3);
+        }
+        .header-inner { max-width: 1100px; margin: 0 auto; padding: 0 28px; }
+        .header-top { display: flex; align-items: center; justify-content: space-between; padding: 16px 0 12px; }
+        .logo-area img { height: 36px; filter: brightness(0) invert(1); }
+        .header-badge {
+            background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
+            color: #fff; padding: 5px 14px; border-radius: 20px; font-size: 11.5px; font-weight: 400;
+        }
+        .nav-tabs { display: flex; border-top: 1px solid rgba(255,255,255,0.1); }
+        .nav-tab {
+            flex: 1; padding: 14px 20px; color: rgba(255,255,255,0.55); font-size: 14px; font-weight: 500;
+            text-align: center; cursor: pointer; transition: all 0.3s; position: relative; user-select: none;
+        }
+        .nav-tab::after {
+            content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+            width: 0; height: 3px; background: #fff; border-radius: 3px 3px 0 0; transition: width 0.3s;
+        }
+        .nav-tab:hover { color: rgba(255,255,255,0.85); background: rgba(255,255,255,0.04); }
+        .nav-tab.active { color: #fff; font-weight: 600; }
+        .nav-tab.active::after { width: 40px; }
+        .tab-num {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 20px; height: 20px; border-radius: 50%; background: rgba(255,255,255,0.15);
+            font-size: 10.5px; font-weight: 700; margin-right: 7px; vertical-align: middle;
+        }
+        .nav-tab.active .tab-num { background: rgba(255,255,255,0.25); }
+
+        /* ══════ Content ══════ */
+        .wrap { max-width: 1100px; margin: 0 auto; padding: 28px 28px 40px; }
+        .tab-content { display: none; animation: fadeUp 0.35s ease; }
+        .tab-content.active { display: block; }
+        @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+        .sec-header { margin-bottom: 28px; }
+        .sec-title { font-size: 24px; font-weight: 700; color: var(--primary-dark); margin-bottom: 6px; }
+        .sec-sub { font-size: 14px; color: var(--text-sub); line-height: 1.5; }
+        .sec-bar { width: 40px; height: 3px; background: linear-gradient(90deg, var(--primary), var(--accent)); border-radius: 3px; margin-top: 14px; }
+
+        /* ══════ Tab1: 합격사례 ══════ */
+        /* Stats */
+        .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 28px; }
+        .stat {
+            background: var(--white); border-radius: 14px; padding: 22px 18px; text-align: center;
+            box-shadow: var(--shadow); border-top: 3px solid var(--accent);
+        }
+        .stat-num { font-size: 28px; font-weight: 900; color: var(--primary); line-height: 1.2; }
+        .stat-label { font-size: 12.5px; color: var(--text-sub); margin-top: 4px; font-weight: 400; }
+
+        /* Year toggle */
+        .yr { margin-bottom: 14px; }
+        .yr-head {
+            display: flex; align-items: center; gap: 12px;
+            padding: 14px 20px; background: var(--white); border-radius: 12px;
+            box-shadow: var(--shadow); cursor: pointer; transition: all 0.25s;
+            border-left: 4px solid var(--accent); user-select: none;
+        }
+        .yr-head:hover { box-shadow: var(--shadow-md); }
+        .yr-head.open { border-radius: 12px 12px 0 0; border-left-color: var(--primary); }
+        .yr-badge {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary-light));
+            color: #fff; padding: 5px 14px; border-radius: 7px; font-size: 14px; font-weight: 700; white-space: nowrap;
+        }
+        .yr-head.open .yr-badge { background: linear-gradient(135deg, var(--primary), var(--accent)); }
+        .yr-info { flex: 1; font-size: 13px; color: var(--text-sub); }
+        .yr-info b { color: var(--primary); }
+        .yr-arrow {
+            width: 24px; height: 24px; border-radius: 50%; background: var(--bg);
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: transform 0.3s;
+        }
+        .yr-arrow svg { width: 12px; height: 12px; fill: var(--text-sub); }
+        .yr-head.open .yr-arrow { transform: rotate(180deg); }
+
+        .yr-body {
+            display: none; background: var(--white); border-radius: 0 0 12px 12px;
+            box-shadow: var(--shadow); padding: 2px 0; margin-top: -1px;
+        }
+        .yr-body.open { display: block; }
+
+        .row {
+            display: flex; align-items: center; padding: 10px 20px; gap: 10px;
+            border-bottom: 1px solid #f3f4f6; transition: background 0.15s; font-size: 13.5px;
+        }
+        .row:last-child { border-bottom: none; }
+        .row:hover { background: #f9fafb; }
+        .row-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+        .row-univ { font-weight: 600; color: var(--text); min-width: 110px; white-space: nowrap; }
+        .row-detail { flex: 1; color: var(--text-sub); font-size: 13px; }
+        .row-badge {
+            padding: 3px 10px; border-radius: 6px; font-size: 11px; font-weight: 600;
+            background: var(--success-light); color: var(--success); white-space: nowrap; flex-shrink: 0;
+        }
+
+        /* Individual cards */
+        .indiv-title { font-size: 16px; font-weight: 700; color: var(--primary-dark); margin: 28px 0 14px 2px; }
+        .indiv-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 8px; }
+        .indiv {
+            display: flex; align-items: center; gap: 10px; padding: 12px 16px;
+            background: var(--white); border-radius: 10px; box-shadow: 0 1px 6px rgba(9,24,71,0.04);
+            border-left: 3px solid transparent; transition: all 0.2s; font-size: 13px;
+        }
+        .indiv:hover { border-left-color: var(--accent); box-shadow: var(--shadow); }
+        .indiv-name { font-weight: 600; white-space: nowrap; }
+        .indiv-result { color: var(--text-sub); flex: 1; }
+        .indiv-result strong { color: var(--primary); font-weight: 600; }
+
+        /* ══════ Tab2: 관리방법 ══════ */
+        .process-flow { position: relative; }
+        .process-flow::before {
+            content: ''; position: absolute; left: 28px; top: 40px; bottom: 40px;
+            width: 2px; background: linear-gradient(to bottom, var(--accent), var(--primary-light));
+            border-radius: 2px;
+        }
+        .step {
+            position: relative; padding-left: 64px; margin-bottom: 24px;
+        }
+        .step-num {
+            position: absolute; left: 12px; top: 18px;
+            width: 34px; height: 34px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: #fff; font-size: 13px; font-weight: 700;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 2px 8px rgba(15,38,112,0.25); z-index: 1;
+        }
+        .step-card {
+            background: var(--white); border-radius: 14px; padding: 22px 24px;
+            box-shadow: var(--shadow-md); transition: box-shadow 0.3s;
+        }
+        .step-card:hover { box-shadow: var(--shadow-lg); }
+        .step-tag {
+            display: inline-block; padding: 3px 10px; border-radius: 6px; font-size: 11px;
+            font-weight: 600; margin-bottom: 8px;
+        }
+        .tag-main { background: #eff6ff; color: var(--accent); }
+        .tag-report { background: #fef3c7; color: #b45309; }
+        .tag-exam { background: #fce7f3; color: #be185d; }
+        .tag-coach { background: var(--success-light); color: var(--success); }
+        .tag-final { background: #ede9fe; color: #7c3aed; }
+        .step-title { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+        .step-desc { font-size: 13.5px; color: var(--text-sub); line-height: 1.7; }
+        .step-detail {
+            margin-top: 14px; padding: 14px 18px; background: var(--bg); border-radius: 10px;
+            font-size: 12.5px; color: var(--text-sub); line-height: 1.8;
+        }
+        .step-detail strong { color: var(--text); font-weight: 600; }
+        .step-flow {
+            display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+            margin-top: 12px; font-size: 12px;
+        }
+        .flow-item {
+            padding: 6px 12px; background: var(--white); border: 1px solid var(--border);
+            border-radius: 8px; font-weight: 500; color: var(--text);
+        }
+        .flow-arrow { color: var(--accent); font-weight: 700; font-size: 14px; }
+
+        /* ══════ Tab3: 컨설턴트 ══════ */
+        .embed-wrap {
+            position: relative; width: 100%; padding-bottom: 56.25%; border-radius: 16px;
+            overflow: hidden; background: #000; box-shadow: var(--shadow-lg);
+        }
+        .embed-wrap iframe {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;
+        }
+
+        /* ══════ Tab4: 상담 리포트 (잠금) ══════ */
+        .lock-num svg { display: block; }
+        .locked-wrap {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 80px 32px; text-align: center;
+        }
+        .locked-icon {
+            width: 100px; height: 100px; border-radius: 50%;
+            background: linear-gradient(135deg, #e8edf7, #dbe4f5);
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 28px; position: relative;
+        }
+        .locked-icon svg { width: 44px; height: 44px; fill: var(--primary); opacity: 0.7; }
+        .locked-icon::after {
+            content: ''; position: absolute; inset: -6px; border-radius: 50%;
+            border: 2px dashed var(--accent); opacity: 0.25; animation: lockPulse 3s ease-in-out infinite;
+        }
+        @keyframes lockPulse { 0%,100%{ transform:scale(1); opacity:0.25; } 50%{ transform:scale(1.06); opacity:0.4; } }
+        .locked-title { font-size: 22px; font-weight: 700; color: var(--primary-dark); margin-bottom: 10px; }
+        .locked-desc { font-size: 14px; color: var(--text-sub); line-height: 1.7; max-width: 400px; margin-bottom: 28px; }
+        .locked-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 12px 28px; border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: #fff; font-size: 14px; font-weight: 600;
+            box-shadow: 0 4px 16px rgba(15,38,112,0.25);
+        }
+        .locked-badge svg { width: 16px; height: 16px; fill: #fff; }
+        .locked-steps {
+            display: flex; gap: 24px; margin-top: 36px; flex-wrap: wrap; justify-content: center;
+        }
+        .locked-step {
+            display: flex; flex-direction: column; align-items: center; gap: 8px; width: 120px;
+        }
+        .locked-step-num {
+            width: 36px; height: 36px; border-radius: 50%;
+            background: var(--white); border: 2px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 13px; font-weight: 700; color: var(--accent);
+        }
+        .locked-step-label { font-size: 12px; color: var(--text-sub); text-align: center; line-height: 1.4; }
+
+        /* ══════ Footer ══════ */
+        .footer { text-align: center; padding: 28px; color: var(--text-muted); font-size: 12px; font-weight: 300; }
+
+        /* ══════ Responsive ══════ */
+        @media (max-width: 768px) {
+            .header-inner { padding: 0 16px; }
+            .header-badge { display: none; }
+            .nav-tab { padding: 12px 10px; font-size: 13px; }
+            .tab-num { display: none; }
+            .wrap { padding: 20px 16px 32px; }
+            .stats { grid-template-columns: 1fr; gap: 10px; }
+            .stat { padding: 16px; }
+            .stat-num { font-size: 24px; }
+            .row { flex-wrap: wrap; gap: 4px; padding: 10px 16px; }
+            .row-univ { min-width: auto; font-size: 13px; }
+            .row-detail { width: 100%; order: 3; font-size: 12px; }
+            .indiv-grid { grid-template-columns: 1fr; }
+            .process-flow::before { left: 22px; }
+            .step { padding-left: 52px; }
+            .step-num { left: 6px; width: 30px; height: 30px; font-size: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <div class="header-inner">
+        <div class="header-top">
+            <div class="logo-area">
+                <img src="리베라입시컨설팅_Logo (3).png" alt="리베라입시컨설팅">
+            </div>
+            <div class="header-badge">입시 전문 컨설팅</div>
+        </div>
+        <nav class="nav-tabs">
+            <div class="nav-tab active" data-tab="cases"><span class="tab-num">1</span>합격 사례</div>
+            <div class="nav-tab" data-tab="manage"><span class="tab-num">2</span>관리 방법</div>
+            <div class="nav-tab" data-tab="consult"><span class="tab-num">3</span>컨설턴트 소개</div>
+            <div class="nav-tab" data-tab="report"><span class="tab-num lock-num"><svg width="10" height="10" viewBox="0 0 24 24" fill="white"><path d="M18 10h-1V7c0-2.76-2.24-5-5-5S7 4.24 7 7v3H6c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-8c0-1.1-.9-2-2-2zM12 17c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3-7H9V7c0-1.66 1.34-3 3-3s3 1.34 3 3v3z"/></svg></span>상담 리포트</div>
+        </nav>
+    </div>
+</header>
+
+<main class="wrap">
+
+<!-- ═══════════ TAB 1: 합격 사례 ═══════════ -->
+<div class="tab-content active" id="tab-cases">
+    <div class="sec-header">
+        <h2 class="sec-title">합격 사례 소개</h2>
+        <p class="sec-sub">리베라입시컨설팅 수석 컨설턴트와 함께한 학생들의 합격 결과입니다.</p>
+        <div class="sec-bar"></div>
+    </div>
+
+    <div class="stats">
+        <div class="stat">
+            <div class="stat-num">10년+</div>
+            <div class="stat-label">컨설팅 경력</div>
+        </div>
+        <div class="stat">
+            <div class="stat-num">97%</div>
+            <div class="stat-label">학종 합격률</div>
+        </div>
+        <div class="stat">
+            <div class="stat-num">1,200+</div>
+            <div class="stat-label">학원 원장 교육</div>
+        </div>
+    </div>
+
+    <!-- 2026 -->
+    <div class="yr">
+        <div class="yr-head open" onclick="toggle(this)">
+            <span class="yr-badge">2026학년도</span>
+            <span class="yr-info"><b>70+건</b> — KAIST · 서울대 · 연세대 · 고려대 · 의예과 다수</span>
+            <span class="yr-arrow"><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5"/></svg></span>
+        </div>
+        <div class="yr-body open">
+            <div class="row"><span class="row-dot"></span><span class="row-univ">KAIST</span><span class="row-detail">새내기과정학부(무학과) ─ 반도체시스템인재전형</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">서울대학교</span><span class="row-detail">자유전공 ─ 일반전형</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">서울대학교</span><span class="row-detail">지리학과 ─ 일반전형</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">서울대학교</span><span class="row-detail">간호대학 ─ 일반전형</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">서울대학교</span><span class="row-detail">사회교육과 ─ 일반전형</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">서울대학교</span><span class="row-detail">역사학부 ─ 지역균형</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">서울대학교</span><span class="row-detail">생명과학과 · 의류학과 · 산림과학부 · 첨단융합학부 · 물리교육과 ─ 학생부종합</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">서울대학교</span><span class="row-detail">전기정보공학부 ─ 학생부종합</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">서울대학교</span><span class="row-detail">약학대학 ─ 정시</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">서울대학교</span><span class="row-detail">의대 · 성균관대 의대</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">연세대학교</span><span class="row-detail">의예과 ─ 학생부종합</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">연세대학교</span><span class="row-detail">진리자유학부(인문) · 경영학과 · 영어영문학과 ─ 활동우수형</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">연세대학교</span><span class="row-detail">행정학과 ─ 활동우수형 (2명)</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">연세대학교</span><span class="row-detail">언더우드학부(인문사회) ─ 국제인재</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">연세대학교</span><span class="row-detail">HASS ─ 3명 / ISE / 정치외교학과 ─ 학생부종합</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">고려대학교</span><span class="row-detail">경영대학 · 언어학과 ─ 학업우수형</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">고려대학교</span><span class="row-detail">데이터과학과 · 경제학과 · 영어교육과 · 가정교육과 ─ 계열적합전형</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">고려대학교</span><span class="row-detail">바이오의공학부 ─ 논술 / 지리교육과 ─ 학교추천 / 컴퓨터학과 ─ 종합</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">고려대학교</span><span class="row-detail">보건환경융합과학부 ─ 학생부종합</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">서강대학교</span><span class="row-detail">영문학부 ─ 교과(지역균형) / 경제학과 ─ 종합(일반)</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">성균관대학교</span><span class="row-detail">자유전공 · 글로벌융합학부 ─ 성균인재(각 2명) / 사회과학 · 에너지 · 컴퓨터교육 · 반도체 · 공학계열</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">POSTECH</span><span class="row-detail">무학과 ─ 학생부종합</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">DGIST · UNIST · GIST</span><span class="row-detail">융복합대학 기초학부 / 일반전형 2명 / 반도체공학과</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">한양대학교</span><span class="row-detail">의대 · 신소재공학과 · 미디어커뮤니케이션학과</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">경희대학교</span><span class="row-detail">의예과 · 치의예 · 영어영문학과 ─ 학생부종합</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">이화여자대학교</span><span class="row-detail">의예과 / 인문과학대학 / 간호학부 / 수학과 / 건축도시시스템공학 / 통계학과</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">울산대학교</span><span class="row-detail">의대 (2명) · 부산대 의대</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">인하대학교</span><span class="row-detail">의예과</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">건양대학교</span><span class="row-detail">의대</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">경북대학교</span><span class="row-detail">치의예과 / 첨단기술융합 / 자율전공학부 / 응용화학공학부</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">원광대 · 계명대 · 가톨릭관동대</span><span class="row-detail">한의예과 / 의예과 / 의학과</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">중앙대학교</span><span class="row-detail">약학과 · 경영학과(2명) · 생명과학과</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">국군사관학교</span><span class="row-detail">합격</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">한국외대</span><span class="row-detail">경제학부 · 영어교육과 · 아랍어과 · 글로벌스포츠산업학부 · 페르시아어과(논술) · 중국어교육전공(면접)</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">건국대학교</span><span class="row-detail">수학과(KU자기추천) · 자유전공학부 · 전기전자공학부 · 항공우주학과 · 동물자원식품과학유통학부</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">숙명여대 · 국민대</span><span class="row-detail">경영학부(숙명인재) · 법학부(논술) · KMU International Business School(어학특기자) · 기계공학과</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">동국대학교</span><span class="row-detail">전자전기공학부 · 경영학과 · 경제학과 · 철학과</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">홍익대 · 숭실대</span><span class="row-detail">법학부 · 기계공학부 · 법학과 · 신소재공학과 · 글로벌미디어학부</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">인하대 · 서울과기대</span><span class="row-detail">경제학과 · 미래에너지융합학과 · 지능형반도체공학과 · 스마트ICT융합과 · 인공지능응용학과</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">서울시립대</span><span class="row-detail">행정학과</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">가톨릭대 · 강원대 · 성신여대 · 상명대</span><span class="row-detail">영어영문학부 · 과학교육학부 · 문화예술경영학과 · 화공신소재학과</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">가천대 · 한국공항대 · 전주교대</span><span class="row-detail">화공생명배터리공학 · 게임영상학과 · 생명과학과 · 항공경영대학 · 초등교육과</span><span class="row-badge">합격</span></div>
+        </div>
+    </div>
+
+    <!-- 2025 -->
+    <div class="yr">
+        <div class="yr-head" onclick="toggle(this)">
+            <span class="yr-badge">2025학년도</span>
+            <span class="yr-info"><b>25+건</b> — KAIST · 서울대 · 연세대 · 교대 · 약학 등</span>
+            <span class="yr-arrow"><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5"/></svg></span>
+        </div>
+        <div class="yr-body">
+            <div class="row"><span class="row-dot"></span><span class="row-univ">KAIST</span><span class="row-detail">창의도전전형 ─ 최초합</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">서울대학교</span><span class="row-detail">식품영양학과 ─ 지역균형</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">서울대학교</span><span class="row-detail">정치외교학과 · 소비자학과 · 심리학과 ─ 일반전형</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">연세대학교</span><span class="row-detail">HASS ─ 4명 / ISE ─ 1명</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">연세대학교</span><span class="row-detail">경제학과 · 식품영양 · 의류환경 · 디스플레이융합 · 정치외교 ─ 활동우수형</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">연세대학교</span><span class="row-detail">UD(인문사회) ─ 특기자전형(국제인재)</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">서울교대 · 공주교대 · 진주교대</span><span class="row-detail">초등교육과 ─ 4명 / 3명 / 1명</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">한양대학교 ERICA</span><span class="row-detail">계약학과 ─ 조기취업형 2명</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">이화여대 · 동덕여대 · 삼육대</span><span class="row-detail">약학대학 · 약학과 ─ 미래인재 / 동덕창의리더 / 세움인재</span><span class="row-badge">합격</span></div>
+        </div>
+    </div>
+
+    <!-- 2024 -->
+    <div class="yr">
+        <div class="yr-head" onclick="toggle(this)">
+            <span class="yr-badge">2024학년도</span>
+            <span class="yr-info"><b>30+건</b> — 연세대 · 고려대 · 성균관대 · 의예과 · 약학과 등</span>
+            <span class="yr-arrow"><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5"/></svg></span>
+        </div>
+        <div class="yr-body">
+            <div class="row"><span class="row-dot"></span><span class="row-univ">연세대학교</span><span class="row-detail">UD(생명과학공학) ─ 특기자전형(국제인재) / HASS ─ 종합(국내고) / 전기전자공학부 ─ 종합</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">고려대학교</span><span class="row-detail">경영대학 ─ 계열적합 · 학업우수(최초합·2차추합)</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">고려대학교</span><span class="row-detail">영어교육과 · 행정학과 ─ 계열적합 / 정치외교학과 ─ 학업우수</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">성균관대학교</span><span class="row-detail">교육학과 ─ 학생부종합(탐구형)</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">한양대학교</span><span class="row-detail">교육공학과 ─ 학생부종합(면접형)</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">경희대학교</span><span class="row-detail">기계공학과 · 회계세무학과 ─ 네오르네상스</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">숙명여자대학교</span><span class="row-detail">영어영문학전공 · 일본학과(장학생) ─ 숙명인재(면접형)</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">동국대학교</span><span class="row-detail">물리학과(논술) · 회계학과(종합) · WISE 간호학과</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">명지대 · 가천대 · 한국공항대</span><span class="row-detail">영어영문학 · 스마트시티 · AI소프트웨어 · 미래자동차 외</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">고신대 · 경상대 · 원광대 · 경상국립대</span><span class="row-detail">의예과 / 약학과 / 수의예과</span><span class="row-badge">합격</span></div>
+        </div>
+    </div>
+
+    <!-- 2023 -->
+    <div class="yr">
+        <div class="yr-head" onclick="toggle(this)">
+            <span class="yr-badge">2023학년도</span>
+            <span class="yr-info"><b>18건</b> — 서울대 경영 · 연세대 · 고려대 경영(장학) 등</span>
+            <span class="yr-arrow"><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5"/></svg></span>
+        </div>
+        <div class="yr-body">
+            <div class="row"><span class="row-dot"></span><span class="row-univ">서울대학교</span><span class="row-detail">경영학과 ─ 일반전형</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">연세대학교</span><span class="row-detail">HASS · UD · ISE ─ 정시국제형</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">연세대학교</span><span class="row-detail">사회복지학과 ─ 추천형 / 사학과 · 식품영양학과 · 중어중문학과 ─ 활동우수형</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">고려대학교</span><span class="row-detail">경영학과 ─ 학업우수형(장학)</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">서울시립대학교</span><span class="row-detail">경영학부 ─ 서류형</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">중앙대학교</span><span class="row-detail">철학과 ─ 학생부종합</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">국민대학교</span><span class="row-detail">시각디자인과 ─ 국민프론티어</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">공주교육대학교</span><span class="row-detail">초등교육과 ─ 2명</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">아주대학교</span><span class="row-detail">정치외교학과 ─ ACE전형</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">가톨릭대학교</span><span class="row-detail">국제학부 ─ 잠재능력우수자</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">공주대학교</span><span class="row-detail">특수교육과 ─ 종합일반</span><span class="row-badge">합격</span></div>
+        </div>
+    </div>
+
+    <!-- 2021 -->
+    <div class="yr">
+        <div class="yr-head" onclick="toggle(this)">
+            <span class="yr-badge">2021학년도</span>
+            <span class="yr-info"><b>2건</b> — 중앙대 간호 · 부산국제고</span>
+            <span class="yr-arrow"><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5"/></svg></span>
+        </div>
+        <div class="yr-body">
+            <div class="row"><span class="row-dot"></span><span class="row-univ">중앙대학교</span><span class="row-detail">간호학과 ─ 종합</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">부산국제고등학교</span><span class="row-detail">합격</span><span class="row-badge">합격</span></div>
+        </div>
+    </div>
+
+    <!-- 2020 -->
+    <div class="yr">
+        <div class="yr-head" onclick="toggle(this)">
+            <span class="yr-badge">2020학년도</span>
+            <span class="yr-info"><b>5건</b> — 고려대 · 한국외대 · 중앙대 약학 편입 등</span>
+            <span class="yr-arrow"><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5"/></svg></span>
+        </div>
+        <div class="yr-body">
+            <div class="row"><span class="row-dot"></span><span class="row-univ">고려대학교</span><span class="row-detail">바이오의공학과 · 언어학과 ─ 종합 1차합</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">한국외국어대학교</span><span class="row-detail">이란어과 ─ 종합 최종합</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">경희대학교</span><span class="row-detail">행정학과 ─ 종합 1차합</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">중앙대학교</span><span class="row-detail">약학대학 ─ 편입 최종합</span><span class="row-badge">합격</span></div>
+        </div>
+    </div>
+
+    <!-- 2019 -->
+    <div class="yr">
+        <div class="yr-head" onclick="toggle(this)">
+            <span class="yr-badge">2019학년도</span>
+            <span class="yr-info"><b>5건</b> — 서울대 전기정보공학 · 광주교대 · 경희대 등</span>
+            <span class="yr-arrow"><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5"/></svg></span>
+        </div>
+        <div class="yr-body">
+            <div class="row"><span class="row-dot"></span><span class="row-univ">서울대학교</span><span class="row-detail">전기정보공학부 ─ 일반전형 최종합</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">광주교육대학교</span><span class="row-detail">초등교육과 ─ 종합 최종합</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">경희대학교</span><span class="row-detail">행정학과 ─ 종합 최종합</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">건국대학교</span><span class="row-detail">식품공학과 ─ 종합 최종합</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">덕성여자대학교</span><span class="row-detail">아동가족학과 ─ 종합 최종합</span><span class="row-badge">합격</span></div>
+        </div>
+    </div>
+
+    <!-- 2018 -->
+    <div class="yr">
+        <div class="yr-head" onclick="toggle(this)">
+            <span class="yr-badge">2018학년도</span>
+            <span class="yr-info"><b>6건</b> — 연세대 특기자 · 동국대 · 한국외대 · 경북대 등</span>
+            <span class="yr-arrow"><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5"/></svg></span>
+        </div>
+        <div class="yr-body">
+            <div class="row"><span class="row-dot"></span><span class="row-univ">연세대학교</span><span class="row-detail">교육학부 · 문헌정보학과 ─ 특기자전형 1차합</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">동국대학교</span><span class="row-detail">고고미술사학과 ─ 종합 최종합</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">한국외국어대학교</span><span class="row-detail">통계학과 ─ 종합 최종합</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">경북대학교</span><span class="row-detail">스포츠레저학과 ─ 종합 1차합</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">성신여자대학교</span><span class="row-detail">정보시스템공학과 ─ 종합 최종합</span><span class="row-badge">합격</span></div>
+        </div>
+    </div>
+
+    <!-- 2017 -->
+    <div class="yr">
+        <div class="yr-head" onclick="toggle(this)">
+            <span class="yr-badge">2017학년도</span>
+            <span class="yr-info"><b>8건</b> — 연세대 약학 · 민족사관고 · UNIST · 특목고 전원합격</span>
+            <span class="yr-arrow"><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5"/></svg></span>
+        </div>
+        <div class="yr-body">
+            <div class="row"><span class="row-dot"></span><span class="row-univ">연세대학교</span><span class="row-detail">약학대학 ─ 자소서 지도(우선선발)</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">UNIST</span><span class="row-detail">경영계열 ─ 자소서 지도(내신 1등급 초반)</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">가톨릭대학교</span><span class="row-detail">철학과 ─ 자소서 지도(평준화 일반고 / 내신 3등급 중반)</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">부산교육대학교</span><span class="row-detail">자소서 지도(평준화 일반고 / 내신 2등급 초반)</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">부산대학교</span><span class="row-detail">한문학과 ─ 자소서 지도(지방 외고 / 내신 5등급 중반)</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">민족사관고등학교</span><span class="row-detail">합격</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">국제외고 · 포항제철고</span><span class="row-detail">특목고 면접 대비반 전원 합격</span><span class="row-badge">합격</span></div>
+            <div class="row"><span class="row-dot"></span><span class="row-univ">HAFS · 현대청운고</span><span class="row-detail">면접 및 자기소개서 지도</span><span class="row-badge">합격</span></div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════ TAB 2: 관리 방법 ═══════════ -->
+<div class="tab-content" id="tab-manage">
+    <div class="sec-header">
+        <h2 class="sec-title">시행착오 컨설팅 (10회차)</h2>
+        <p class="sec-sub">학생의 생기부에 진정성 있는 '시행착오 과정'을 담기 위한 체계적인 프리미엄 관리 프로세스입니다.</p>
+        <div class="sec-bar"></div>
+    </div>
+
+    <div class="process-flow">
+
+        <!-- STEP 1 -->
+        <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-card">
+                <span class="step-tag tag-main">1회차</span>
+                <div class="step-title">생기부 컨설팅</div>
+                <div class="step-desc">현재 생기부를 정밀 진단하고, 학생 맞춤형 스토리라인을 추천합니다. 입시 전략 정보와 향후 관리 프로세스를 안내드립니다.</div>
+                <div class="step-detail">
+                    <strong>진행 내용</strong><br>
+                    · 생기부 현황 진단 및 분석<br>
+                    · 맞춤형 스토리 방향 추천<br>
+                    · 목표 대학별 입시 정보 제공<br>
+                    · 연간 관리 프로세스 소개
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 2 -->
+        <div class="step">
+            <div class="step-num">2~9</div>
+            <div class="step-card">
+                <span class="step-tag tag-report">총 8회차</span>
+                <div class="step-title">시행착오 리포트 컨설팅</div>
+                <div class="step-desc">생기부에 '시행착오 과정'을 진정성 있게 담기 위한 핵심 프리미엄 컨설팅입니다. 수행평가·탐구 보고서마다 소재 추천부터 보고서 70% 완성까지 지원합니다.</div>
+                <div class="step-flow">
+                    <span class="flow-item">소재 추천 및 결정</span>
+                    <span class="flow-arrow">&rarr;</span>
+                    <span class="flow-item">맞춤 자료 제공</span>
+                    <span class="flow-arrow">&rarr;</span>
+                    <span class="flow-item">어려운 점 도출</span>
+                    <span class="flow-arrow">&rarr;</span>
+                    <span class="flow-item">보고서 70% 완성</span>
+                </div>
+                <div class="step-detail" style="margin-top:16px;">
+                    <strong>왜 '어려운 점'을 의도적으로 도출할까요?</strong><br>
+                    AI 시대, 생기부의 핵심은 <strong>신뢰성</strong>입니다. 완벽한 결과보다 탐구 중 부딪힌 어려움과 그 해결 과정이 학생의 진정성을 증명합니다. 논문과 전문 서적을 기반으로 해결과정을 설계해 면접에서도 자신 있게 설명할 수 있도록 합니다.
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 3 -->
+        <div class="step">
+            <div class="step-num">+</div>
+            <div class="step-card">
+                <span class="step-tag tag-exam">시험 직후</span>
+                <div class="step-title">수행평가 집중 관리</div>
+                <div class="step-desc">시험 직후 수행평가가 몰리는 시기에 선제적으로 일정과 과제를 관리합니다. 별도 회차 차감 없이 진행됩니다.</div>
+            </div>
+        </div>
+
+        <!-- STEP 4 -->
+        <div class="step">
+            <div class="step-num">+</div>
+            <div class="step-card">
+                <span class="step-tag tag-coach">중간 · 기말</span>
+                <div class="step-title">학습 코칭</div>
+                <div class="step-desc">내신 성적 향상을 위한 프리미엄 학습 코칭입니다. 중간고사·기말고사 시기에 맞춰 학습 전략을 수립하고 관리합니다. 별도 회차 차감 없이 진행됩니다.</div>
+            </div>
+        </div>
+
+        <!-- STEP 5 -->
+        <div class="step">
+            <div class="step-num">10</div>
+            <div class="step-card">
+                <span class="step-tag tag-final">10회차</span>
+                <div class="step-title">최종 생기부 점검 및 심화 연계</div>
+                <div class="step-desc">1년간 쌓아온 생기부를 최종 점검합니다. 면접 대비를 위한 진위 여부 파악과 추후 심화 연계 방향을 안내합니다.</div>
+                <div class="step-detail">
+                    <strong>진행 내용</strong><br>
+                    · 최종 생기부 완성도 확인<br>
+                    · 면접 대비 진위 여부 점검<br>
+                    · 추후 심화 연계 방향 간단 설명
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ═══════════ TAB 3: 컨설턴트 소개 ═══════════ -->
+<div class="tab-content" id="tab-consult">
+    <div class="sec-header">
+        <h2 class="sec-title">컨설턴트 소개</h2>
+        <p class="sec-sub">리베라입시컨설팅의 전문 컨설턴트를 만나보세요.</p>
+        <div class="sec-bar"></div>
+    </div>
+    <div class="embed-wrap">
+        <iframe src="https://www.loom.com/embed/0e383173ce4d4e1a9b0256806b69f66f?autoplay=1" title="컨설턴트 소개" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    </div>
+</div>
+
+<!-- ═══════════ TAB 4: 상담 리포트 ═══════════ -->
+<div class="tab-content" id="tab-report">
+    <div class="sec-header">
+        <h2 class="sec-title">상담 리포트</h2>
+        <p class="sec-sub">상담 완료 후 맞춤형 리포트가 이곳에 제공됩니다.</p>
+        <div class="sec-bar"></div>
+    </div>
+
+    <div class="card" style="border-radius:20px; overflow:hidden;">
+        <div class="locked-wrap">
+            <div class="locked-icon">
+                <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM12 17c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1s3.1 1.39 3.1 3.1v2z"/></svg>
+            </div>
+            <div class="locked-title">상담 후 열람 가능합니다</div>
+            <div class="locked-desc">전문 컨설턴트와의 상담이 완료되면,<br>학생 맞춤형 분석 리포트가 이곳에 제공됩니다.</div>
+            <div class="locked-badge">
+                <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+                상담 예약 후 리포트 확인
+            </div>
+            <div class="locked-steps">
+                <div class="locked-step">
+                    <div class="locked-step-num">1</div>
+                    <div class="locked-step-label">전화 상담<br>진행</div>
+                </div>
+                <div class="locked-step">
+                    <div class="locked-step-num">2</div>
+                    <div class="locked-step-label">생기부<br>진단</div>
+                </div>
+                <div class="locked-step">
+                    <div class="locked-step-num">3</div>
+                    <div class="locked-step-label">맞춤 리포트<br>제공</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</main>
+
+<footer class="footer">&copy; 2026 리베라입시컨설팅. All rights reserved.</footer>
+
+<script>
+    // Tab
+    document.querySelectorAll('.nav-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            tab.classList.add('active');
+            document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+        });
+    });
+
+    // Year toggle
+    function toggle(el) {
+        el.classList.toggle('open');
+        el.nextElementSibling.classList.toggle('open');
+    }
+</script>
+
+</body>
+</html>
